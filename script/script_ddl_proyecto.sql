@@ -1,3 +1,5 @@
+CREATE DATABASE Vida_Activa
+
 CREATE TABLE socio
 (
     dni_socio INT NOT NULL,
