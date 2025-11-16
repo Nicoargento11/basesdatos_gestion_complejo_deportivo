@@ -1,3 +1,4 @@
+
 use master ;
 CREATE DATABASE Vida_Activa;
 
@@ -14,7 +15,9 @@ CREATE TABLE socio
     estado_socio VARCHAR(200) NOT NULL,
     
     CONSTRAINT PK_Socio PRIMARY KEY (dni_socio),
-    CONSTRAINT CHK_EstadoSocio CHECK (estado_socio IN ('activo', 'suspendido', 'baja'))
+    CONSTRAINT CHK_EstadoSocio CHECK (estado_socio IN ('activo', 'suspendido', 'baja')),
+    CONSTRAINT CHK_FechaAlta_socio CHECK (fecha_alta <= CAST(GETDATE() AS DATE))
+
 );
 
 CREATE TABLE apto_medico
@@ -26,7 +29,8 @@ CREATE TABLE apto_medico
     dni_socio INT NOT NULL,
     
     CONSTRAINT PK_AptoMedico PRIMARY KEY (id_apto_medico),
-    CONSTRAINT FK_AptoMedico_Socio FOREIGN KEY (dni_socio) REFERENCES socio(dni_socio)
+    CONSTRAINT FK_AptoMedico_Socio FOREIGN KEY (dni_socio) REFERENCES socio(dni_socio),
+    CONSTRAINT CHK_Fecha_apto_medico CHECK (emitido_en < vence_en)
 );
 
 CREATE TABLE actividad
@@ -37,6 +41,7 @@ CREATE TABLE actividad
     
     CONSTRAINT PK_Actividad PRIMARY KEY (id_actividad),
     CONSTRAINT CHK_RequiereApto CHECK (requiere_apto IN ('si', 'no'))
+    -- requiere_apto BIT NOT NULL  // usar 0 = no / 1 = sí
 );
 
 CREATE TABLE cuota
@@ -50,7 +55,8 @@ CREATE TABLE cuota
     
     CONSTRAINT PK_Cuota PRIMARY KEY (id_cuota),
     CONSTRAINT FK_Cuota_Socio FOREIGN KEY (dni_socio) REFERENCES socio(dni_socio),
-    CONSTRAINT CHK_EstadoCuota CHECK (estado_cuota IN ('pagada', 'pendiente', 'vencida'))
+    CONSTRAINT CHK_EstadoCuota CHECK (estado_cuota IN ('pagada', 'pendiente', 'vencida')),
+    CONSTRAINT CHK_Fecha_cuota CHECK (periodo_inicio < periodo_fin)
 );
 
 CREATE TABLE profesor
@@ -70,7 +76,8 @@ CREATE TABLE acceso
     dni_socio INT NOT NULL,
     
     CONSTRAINT PK_Acceso PRIMARY KEY (id_acceso),
-    CONSTRAINT FK_Acceso_Socio FOREIGN KEY (dni_socio) REFERENCES socio(dni_socio)
+    CONSTRAINT FK_Acceso_Socio FOREIGN KEY (dni_socio) REFERENCES socio(dni_socio),
+    CONSTRAINT CHK_Fecha_acesso CHECK (fecha_hora <= GETDATE())
 );
 
 CREATE TABLE instalacion
@@ -99,7 +106,8 @@ CREATE TABLE reserva
     CONSTRAINT PK_Reserva PRIMARY KEY (id_reserva),
     CONSTRAINT FK_Reserva_Socio FOREIGN KEY (dni_socio) REFERENCES socio(dni_socio),
     CONSTRAINT FK_Reserva_Instalacion FOREIGN KEY (id_instalacion) REFERENCES instalacion(id_instalacion),
-    CONSTRAINT CHK_EstadoReserva CHECK (estado_reserva IN ('Activa', 'Cancelada', 'Cumplida'))
+    CONSTRAINT CHK_EstadoReserva CHECK (estado_reserva IN ('Activa', 'Cancelada', 'Cumplida')),
+    CONSTRAINT CHK_Fecha_reserva CHECK (fecha_reserva <= GETDATE() AND horario_inicio < horario_fin)
 );
 
 CREATE TABLE medio_pago
@@ -115,9 +123,9 @@ CREATE TABLE Actividad_Instalacion
     id_actividad INT NOT NULL,
     id_instalacion INT NOT NULL,
     
-    CONSTRAINT PK_ActInst PRIMARY KEY (id_actividad, id_instalacion),
-    CONSTRAINT FK_ActInst_Actividad FOREIGN KEY (id_actividad) REFERENCES actividad(id_actividad),
-    CONSTRAINT FK_ActInst_Instalacion FOREIGN KEY (id_instalacion) REFERENCES instalacion(id_instalacion)
+    CONSTRAINT PK_Actividad_Instalacion PRIMARY KEY (id_actividad, id_instalacion),
+    CONSTRAINT FK_Actividad FOREIGN KEY (id_actividad) REFERENCES actividad(id_actividad),
+    CONSTRAINT FK_Instalacion FOREIGN KEY (id_instalacion) REFERENCES instalacion(id_instalacion)
 );
 
 CREATE TABLE pago
@@ -130,7 +138,10 @@ CREATE TABLE pago
     
     CONSTRAINT PK_Pago PRIMARY KEY (id_pago),
     CONSTRAINT FK_Pago_Cuota FOREIGN KEY (id_cuota) REFERENCES cuota(id_cuota),
-    CONSTRAINT FK_Pago_MedioPago FOREIGN KEY (id_medio_pago) REFERENCES medio_pago(id_medio_pago)
+    CONSTRAINT FK_Pago_MedioPago FOREIGN KEY (id_medio_pago) REFERENCES medio_pago(id_medio_pago),
+    CONSTRAINT CHK_Fecha_pago CHECK (fecha_pago <= CAST(GETDATE() AS DATE)),
+    CONSTRAINT CHK_Monto CHECK (monto > 0)
+
 );
 
 CREATE TABLE clase
@@ -147,7 +158,8 @@ CREATE TABLE clase
     CONSTRAINT PK_Clase PRIMARY KEY (id_clase),
     CONSTRAINT FK_Clase_Profesor FOREIGN KEY (id_profesor) REFERENCES profesor(id_profesor),
     CONSTRAINT FK_Clase_ActInst FOREIGN KEY (id_actividad, id_instalacion) REFERENCES Actividad_Instalacion(id_actividad, id_instalacion),
-    CONSTRAINT CHK_EstadoClase CHECK (estado_clase IN ('programada', 'en curso', 'completada', 'cancelada'))
+    CONSTRAINT CHK_EstadoClase CHECK (estado_clase IN ('programada', 'en curso', 'completada', 'cancelada')),
+    CONSTRAINT CHK_Fecha_clase CHECK (hora_inicio < hora_fin)
 );
 
 CREATE TABLE inscripcion
@@ -158,5 +170,6 @@ CREATE TABLE inscripcion
     
     CONSTRAINT PK_Inscripcion PRIMARY KEY (id_clase, dni_socio),
     CONSTRAINT FK_Inscripcion_Clase FOREIGN KEY (id_clase) REFERENCES clase(id_clase),
-    CONSTRAINT FK_Inscripcion_Socio FOREIGN KEY (dni_socio) REFERENCES socio(dni_socio)
+    CONSTRAINT FK_Inscripcion_Socio FOREIGN KEY (dni_socio) REFERENCES socio(dni_socio),
+    CONSTRAINT CHK_Fecha_inscripcion CHECK (fecha_inscripcion <= GETDATE())
 );
