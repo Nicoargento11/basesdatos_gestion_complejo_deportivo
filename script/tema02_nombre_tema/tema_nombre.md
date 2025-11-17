@@ -4,11 +4,10 @@
 - Método: Comparación de 3 escenarios (sin índice, índice simple, índice compuesto)
   
 *=== CONFIGURACIÓN INICIAL ===*
-Ejecución de DBCC completada.
-Caché limpiado para pruebas consistentes
+- Ejecución de DBCC completada.Caché limpiado para pruebas consistentes
 
 *=== PRUEBA 1: SIN ÍNDICES EN FECHA_HORA ===*
-Ejecutando consulta por período sin índices en fecha...
+- Ejecutando consulta por período sin índices en fecha...
 NOTA: La tabla ya tiene índice agrupado PK_Acceso en id_acceso
 
 Tiempos de ejecución de SQL Server:
@@ -28,7 +27,7 @@ Tiempos de ejecución de SQL Server:
 
 
 *=== PRUEBA 2: CON ÍNDICE NO AGRUPADO SIMPLE ===*
-Creando índice NO AGRUPADO en fecha_hora...
+- Creando índice NO AGRUPADO en fecha_hora...
 Índice NO AGRUPADO IX_acceso_fecha_hora creado
 
 Ejecución de DBCC completada. 
@@ -49,10 +48,10 @@ Tiempos de ejecución de SQL Server:
 *=== FIN PRUEBA 2 ===*
 
 ~~ELIMINANDO ÍNDICE SIMPLE~~
-Índice simple eliminado
+- Índice simple eliminado
 
 *=== PRUEBA 3: ÍNDICE NO AGRUPADO CON COLUMNAS INCLUIDAS ===*
-Creando índice no agrupado que INCLUYE columnas adicionales...
+- Creando índice no agrupado que INCLUYE columnas adicionales...
 Índice NO AGRUPADO con columnas incluidas creado
 INCLUYE: dni_socio, id_acceso para evitar Key Lookup
 Ejecución de DBCC completada. 
@@ -74,7 +73,7 @@ Tiempos de ejecución de SQL Server:
 *=== FIN PRUEBA 3 ===*
 
 *EXPLICACIÓN TÉCNICA*
-PROBLEMA ORIGINAL: No se pueden crear múltiples índices agrupados.
+- PROBLEMA ORIGINAL: No se pueden crear múltiples índices agrupados.
 SOLUCIÓN: Usar índices no agrupados con técnica de columnas incluidas.
 VENTAJAS DEL ÍNDICE CON INCLUDE:
 1) Evita "Key Lookup" costoso
@@ -110,22 +109,23 @@ DROP INDEX IX_acceso_fecha_included ON acceso;
 La implementación de índices no agrupados con columnas incluidas representa la solución óptima para consultas de filtrado por rangos de fechas, logrando una reducción del 90-95% en operaciones de lectura en comparación con el escenario sin índices.
 
 Sin Índices:
-SELECT * FROM acceso WHERE fecha_hora BETWEEN...
+- SELECT * FROM acceso WHERE fecha_hora BETWEEN...
 ✅ Ventaja: Cero overhead de mantenimiento
 ❌ Desventaja: Rendimiento muy pobre en datos grandes
 📍 Ideal para: Tablas pequeñas (< 1,000 registros)
 
 Índice Agrupado (Clustered):
-CREATE CLUSTERED INDEX PK_acceso ON acceso(id_acceso)
+- CREATE CLUSTERED INDEX PK_acceso ON acceso(id_acceso)
 ✅ Ventaja: Máximo rendimiento para consultas por PK
 ❌ Desventaja: Solo uno por tabla, costoso en INSERTS
 📍 Ideal para: Clave primaria, consultas secuenciales
 
 Índice No Agrupado con INCLUDE:
-CREATE INDEX IX_fecha ON acceso(fecha_hora) INCLUDE (dni_socio)
+- CREATE INDEX IX_fecha ON acceso(fecha_hora) INCLUDE (dni_socio)
 ✅ Ventaja: Elimina Key Lookup, múltiples índices por tabla
 ❌ Desventaja: Overhead de almacenamiento y mantenimiento
 📍 Ideal para: Consultas específicas con WHERE frecuente
 
-Overhead = Costo adicional o sobrecarga que implica el uso de un recurso o funcionalidad.
-Ejemplo: Es como el "precio que pagas" por tener cierta ventaja.
+- Overhead = Costo adicional o sobrecarga que implica el uso de un recurso o funcionalidad.
+- Ejemplo: Es como el "precio que pagas" por tener cierta ventaja.
+
