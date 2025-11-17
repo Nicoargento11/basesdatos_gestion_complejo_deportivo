@@ -40,7 +40,7 @@ IF @IdClase IS NULL
      END
      INSERT INTO inscripcion (fecha_inscripcion, id_clase, dni_socio)
      VALUES (CAST(GETDATE() AS DATE), @IdClase, @DniSocio);
-     SELECT 'Éxito: Inscripción a la clase ' + CAST(@IdClase AS VARCHAR) + ' creada correctamente para el socio ' + CAST(@DniSocio AS VARCHAR) AS Resultado;
+     SELECT 'Inscripción realizada.' AS Resultado;
     END
 ELSE IF @TipoAccion = 'RESERVA'
     BEGIN
@@ -53,7 +53,7 @@ ELSE IF @TipoAccion = 'RESERVA'
     SELECT @NuevoIdReserva = ISNULL(MAX(id_reserva), 0) + 1 FROM reserva;
     INSERT INTO reserva (id_reserva, fecha_reserva, horario_inicio, horario_fin, estado_reserva, dni_socio, id_instalacion)
     VALUES (@NuevoIdReserva, @FechaReserva, @HorarioInicio, @HorarioFin, 'Activa', @DniSocio, @IdInstalacion);
-    SELECT 'Éxito: Reserva de la instalación ' + CAST(@IdInstalacion AS VARCHAR) + ' creada con ID ' + CAST(@NuevoIdReserva AS VARCHAR) AS Resultado;
+    SELECT 'Reserva creada ' AS Resultado;
 END
 ELSE
 BEGIN
@@ -101,7 +101,7 @@ BEGIN
     END
     ELSE
     BEGIN
-    RAISERROR('Tipo de entidad no válido. Use "CLASE" o "RESERVA".', 16, 1);
+    RAISERROR('Error', 16, 1);
     RETURN;
 END
 
@@ -125,7 +125,7 @@ END
 
 IF @Conflicto > 0
    BEGIN
-   RAISERROR('Operación cancelada: El nuevo horario tiene conflicto de superposición en esa instalación.', 16, 1);
+   RAISERROR('Conflictos en horarios.', 16, 1);
    RETURN;
 END
 
@@ -138,17 +138,17 @@ BEGIN TRANSACTION;
        hora_fin = @NuevoHorarioFin
    WHERE id_clase = @IdEntidad;
    END
-   ELSE -- RESERVA
+   ELSE 
 BEGIN
    UPDATE reserva
    SET horario_inicio = @NuevoHorarioInicio,
    horario_fin = @NuevoHorarioFin,
-   fecha_reserva = CAST(@NuevoHorarioInicio AS DATE) -- Actualiza también la fecha_reserva
+   fecha_reserva = CAST(@NuevoHorarioInicio AS DATE)
    WHERE id_reserva = @IdEntidad;
 END
 
 COMMIT TRANSACTION;
-SELECT 'Éxito: Horario de ' + @TipoEntidad + ' ID ' + CAST(@IdEntidad AS VARCHAR) + ' modificado correctamente.' AS Resultado;
+SELECT 'Éxito: Horario de modificado.' AS Resultado;
 
 END TRY
 BEGIN CATCH
@@ -161,36 +161,34 @@ END
 GO
 
 --3) Procedimiento para dar de baja a un socio
-
-IF OBJECT_ID('SP_DarBajaSocio') IS NOT NULL
-    DROP PROCEDURE SP_DarBajaSocio;
-GO
-
-CREATE PROCEDURE SP_DarBajaSocio @DniSocio INT AS
-BEGIN SET NOCOUNT ON;
- IF NOT EXISTS (SELECT 1 FROM socio WHERE dni_socio = @DniSocio)
- BEGIN
-   RAISERROR('Error: El DNI de socio especificado no existe.', 16, 1);
-   RETURN;
- END
- IF EXISTS (SELECT 1 FROM cuota
- WHERE dni_socio = @DniSocio
- AND estado_cuota IN ('pendiente', 'vencida'))
- BEGIN
-    RAISERROR('Operación cancelada: El socio tiene cuotas pendientes o vencidas y no puede darse de baja.', 16, 1);
-    RETURN;
- END
-  BEGIN TRANSACTION;
-  BEGIN TRY UPDATE socio SET estado_socio = 'baja'
-  WHERE dni_socio = @DniSocio;
-    COMMIT TRANSACTION;
-    SELECT 'Éxito: El socio ' + CAST(@DniSocio AS VARCHAR) + ' ha sido dado de baja correctamente.' AS Resultado;
- END TRY
- BEGIN CATCH
-    IF @@TRANCOUNT > 0
-    ROLLBACK TRANSACTION;
-    THROW;
-    RETURN;
+CREATE PROCEDURE SP_EliminarClase @IdClase INT AS BEGIN
+    SET NOCOUNT ON;
+    DECLARE @InscripcionesEliminadas INT;
+    DECLARE @ClaseEliminada INT;
+    IF NOT EXISTS (SELECT 1 FROM clase WHERE id_clase = @IdClase)
+    BEGIN
+        RAISERROR('Error', 16, 1);
+        RETURN;
+    END
+    BEGIN TRANSACTION;
+    BEGIN TRY
+        DELETE FROM inscripcion
+        WHERE id_clase = @IdClase;
+        SET @InscripcionesEliminadas = @@ROWCOUNT; 
+        DELETE FROM clase
+        WHERE id_clase = @IdClase;
+        SET @ClaseEliminada = @@ROWCOUNT;
+        COMMIT TRANSACTION;
+        SELECT 
+            'Se ha eliminado ' + CAST(@IdClase AS VARCHAR) AS Resultado,
+            @InscripcionesEliminadas AS Inscripciones_Eliminadas,
+            @ClaseEliminada AS Clase_Eliminada;
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0
+        ROLLBACK TRANSACTION;
+        THROW;
+        RETURN;
     END CATCH
 END
 GO
