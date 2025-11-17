@@ -73,4 +73,90 @@ Funciones: Solo admiten parámetros de Entrada (INPUT). Todo el resultado de la 
 Procedimientos Almacenados: Pueden llamar a otras Funciones y a otros Procedimientos Almacenados sin restricciones (excepto las limitaciones de anidamiento de SQL Server).
 Funciones: Solo pueden llamar a otras Funciones. Una función tiene terminantemente prohibido llamar a un Procedimiento Almacenado, reforzando la regla de que las funciones no pueden tener efectos secundarios (modificar datos).
 
+### Comparación con Operaciones directas 
 
+El termino "Operación Directa" hace referencia a ejecutar una instrucción SQL normall (como un SELECT, INSERT, UPDATE o DELETE) enviada desde una aplicación o escrita en el editor por lo que no queda almacenada en el servidor. Esto marca la primera diferencia con la procedimientos y funciones almacenados. Dicha difencia no es solo en como se guardan sino tambien en su eficiencia. En un entorno de producción real y con uso repetitivo, el Procedimiento Almacenado siempre es superior y más eficiente debido a su capacidad de reutilizar el plan de Ejecución.
+
+Usando un caso de prueba: tenemos el los resultados de ejecucion del procedimiento almacenado que elimina de forma fisica una clase registrada en la base de datos y su version como operación directa:
+Procedimiento Almacenado:
+SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+SQL Server parse and compile time: 
+   CPU time = 0 ms, elapsed time = 12 ms.
+SQL Server parse and compile time: 
+   CPU time = 15 ms, elapsed time = 26 ms.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+Table 'clase'. Scan count 0, logical reads 2, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 3 ms.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+Table 'inscripcion'. Scan count 1, logical reads 2, physical reads 1, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 4 ms.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+Table 'inscripcion'. Scan count 1, logical reads 2, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+Table 'clase'. Scan count 0, logical reads 2, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 1 ms.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+
+ SQL Server Execution Times:
+   CPU time = 15 ms,  elapsed time = 38 ms.
+
+Hora de finalización: 2025-11-17T11:52:44.6411598-03:00
+
+Operación Directa:
+SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+SQL Server parse and compile time: 
+   CPU time = 0 ms, elapsed time = 3 ms.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+SQL Server parse and compile time: 
+   CPU time = 0 ms, elapsed time = 0 ms.
+Table 'inscripcion'. Scan count 1, logical reads 2, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 1 ms.
+
+(1 fila afectada)
+SQL Server parse and compile time: 
+   CPU time = 0 ms, elapsed time = 0 ms.
+Table 'inscripcion'. Scan count 1, logical reads 2, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+Table 'clase'. Scan count 0, logical reads 2, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+
+(1 fila afectada)
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+
+Hora de finalización: 2025-11-17T11:57:27.4626734-03:00
+
+El Procedimiento Almacenado fue más efectivo porque demostró una ejecución final más rápida (38 ms) y, crucialmente, maneja la complejidad del plan de ejecución de manera unificada. Además esta ventaja se irá ampliando ya que el procedimiento almacena su plan en caché después de la primera ejecución. Esto significa que la próxima vez que se llame a SP_EliminarClase, los 38 ms de tiempo de compilación y ejecución se reducirán drásticamente a cero o casi cero para el tiempo de compilación, mientras que la Operación Directa requeriría re-compilar sus sentencias individuales cada vez que se ejecute, consumiendo continuamente recursos de CPU y tiempo transcurrido. Por lo tanto, el procedimiento almacenado ofrece una mejor escalabilidad y rendimiento a largo plazo al evitar la sobrecarga constante de compilación.
