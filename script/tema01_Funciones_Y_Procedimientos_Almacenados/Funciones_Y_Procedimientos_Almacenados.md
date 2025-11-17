@@ -1,6 +1,6 @@
 # TEMA 1:Funciones y Procedimientos Almacenados en SQL
 
-### Procedimientos Almacenados (Stored Procedures)
+### Procedimientos Almacenados
 
 Un Procedimiento Almacenado es un conjunto precompilado de sentencias SQL y lógica de negocio que se almacena en el servidor de la base de datos. Su principal objetivo es ejecutar una secuencia de operaciones en la base de datos de manera automatizada y optimizada. Estos se invocan explícitamente utilizando comandos como EXEC (en SQL Server) o CALL (en MySQL), en cuanto a su definición, un procedimiento puede recibir cero o muchos parámetros, los cuales pueden ser de entrada (IN), de salida (OUT), o de entrada/salida (INOUT). Su caracterísctica más importante características más importantes es su capacidad para modificar el estado de la base de datos, ya que pueden ejecutar cualquier operación de manipulación de datos, incluyendo SELECT, INSERT, UPDATE y DELETE. Además, pueden devolver cero, un valor único o múltiples conjuntos de resultados. 
 
@@ -72,4 +72,5 @@ Funciones: Solo admiten parámetros de Entrada (INPUT). Todo el resultado de la 
 -Jerarquía de Llamadas:
 Procedimientos Almacenados: Pueden llamar a otras Funciones y a otros Procedimientos Almacenados sin restricciones (excepto las limitaciones de anidamiento de SQL Server).
 Funciones: Solo pueden llamar a otras Funciones. Una función tiene terminantemente prohibido llamar a un Procedimiento Almacenado, reforzando la regla de que las funciones no pueden tener efectos secundarios (modificar datos).
+
 
