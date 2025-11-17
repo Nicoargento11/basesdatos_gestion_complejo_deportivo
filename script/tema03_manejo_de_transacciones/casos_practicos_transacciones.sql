@@ -4,13 +4,9 @@
 -- Tema: Transacciones y Transacciones Anidadas
 -- =====================================================
 
--- =====================================================
 -- DEMOSTRACIÓN: SIN TRANSACCIÓN vs CON TRANSACCIÓN
--- =====================================================
 
--- ==============================
--- ESCENARIO 1: SIN TRANSACCIÓN
--- ==============================
+-- CASO SIN TRANSACCIÓN
 
 DELETE FROM cuota WHERE dni_socio = 99999999;
 DELETE FROM socio WHERE dni_socio = 99999999;
@@ -39,22 +35,17 @@ BEGIN CATCH
     PRINT 'ERROR: ' + ERROR_MESSAGE();
 END CATCH;
 
--- Verificación: ¿Qué quedó en la BD?
-IF EXISTS (SELECT 1
-FROM socio
-WHERE dni_socio = 99999999)
-    PRINT 'PROBLEMA: Socio insertado pero cuota NO. DATOS INCONSISTENTES.'
-ELSE
-    PRINT 'OK: Datos consistentes';
-
+-- Verificacion
 SELECT *
 FROM socio
 WHERE dni_socio = 99999999;
 GO
 
--- ==============================
--- ESCENARIO 2: CON TRANSACCIÓN
--- ==============================
+SELECT *
+from cuota
+WHERE dni_socio = 99999999;
+
+-- CASO CON TRANSACCIÓN
 
 DELETE FROM cuota WHERE dni_socio = 88888888;
 DELETE FROM socio WHERE dni_socio = 88888888;
@@ -91,37 +82,18 @@ BEGIN CATCH
 END CATCH;
 
 -- Verificación: ¿Qué quedó en la BD?
-IF EXISTS (SELECT 1
-FROM socio
-WHERE dni_socio = 88888888)
-    PRINT 'PROBLEMA: No debería existir';
-ELSE
-    PRINT 'OK: NADA se guardó. Datos consistentes (ATOMICIDAD).';
 
 SELECT *
 FROM socio
 WHERE dni_socio = 88888888;
 GO
 
--- Comparación
-SELECT
-    CASE WHEN EXISTS (SELECT 1
-    FROM socio
-    WHERE dni_socio = 99999999) 
-         THEN 'INCONSISTENTE' ELSE 'CONSISTENTE' END AS 'Sin Transacción',
-    CASE WHEN EXISTS (SELECT 1
-    FROM socio
-    WHERE dni_socio = 88888888) 
-         THEN 'INCONSISTENTE' ELSE 'CONSISTENTE' END AS 'Con Transacción';
-
 -- Limpiar
 DELETE FROM cuota WHERE dni_socio IN (99999999, 88888888);
 DELETE FROM socio WHERE dni_socio IN (99999999, 88888888);
 GO
 
--- =====================================================
 -- CASO 1: INSCRIPCIÓN COMPLETA DE NUEVO SOCIO
--- =====================================================
 
 DECLARE @dni_socio INT = 55555555;
 DECLARE @nombre VARCHAR(200) = 'Carlos';
@@ -208,14 +180,7 @@ END CATCH;
 GO
 
 
-GO
-
 -- CASO PRÁCTICO 2: Alta de Socio con Cuota y Pago Inicial
-
-PRINT '========================================';
-PRINT 'CASO 2: ALTA DE SOCIO COMPLETA';
-PRINT '========================================';
-PRINT '';
 GO
 CREATE OR ALTER PROCEDURE sp_alta_socio_completa
     @dni_socio INT,
@@ -292,14 +257,8 @@ EXEC sp_alta_socio_completa
     @id_medio_pago = 1;
 GO
 
--- =====================================================
 -- CASO PRÁCTICO 3: Inscripción a Clase con Validaciones
--- =====================================================
 
-PRINT '========================================';
-PRINT 'CASO 3: INSCRIPCIÓN A CLASE';
-PRINT '========================================';
-PRINT '';
 GO
 CREATE OR ALTER PROCEDURE sp_inscribir_clase
     @dni_socio INT,
