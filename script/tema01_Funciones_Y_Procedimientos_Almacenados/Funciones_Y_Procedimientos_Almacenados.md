@@ -1,6 +1,6 @@
-#TEMA 1:Funciones y Procedimientos Almacenados en SQL
+# TEMA 1:Funciones y Procedimientos Almacenados en SQL
 
-###Procedimientos Almacenados (Stored Procedures)
+### Procedimientos Almacenados (Stored Procedures)
 
 Un Procedimiento Almacenado es un conjunto precompilado de sentencias SQL y lógica de negocio que se almacena en el servidor de la base de datos. Su principal objetivo es ejecutar una secuencia de operaciones en la base de datos de manera automatizada y optimizada. Estos se invocan explícitamente utilizando comandos como EXEC (en SQL Server) o CALL (en MySQL), en cuanto a su definición, un procedimiento puede recibir cero o muchos parámetros, los cuales pueden ser de entrada (IN), de salida (OUT), o de entrada/salida (INOUT). Su caracterísctica más importante características más importantes es su capacidad para modificar el estado de la base de datos, ya que pueden ejecutar cualquier operación de manipulación de datos, incluyendo SELECT, INSERT, UPDATE y DELETE. Además, pueden devolver cero, un valor único o múltiples conjuntos de resultados. 
 
@@ -9,7 +9,7 @@ transacciones (BEGIN TRANSACTION, COMMIT, ROLLBACK) para garantizar la atomicida
 bloques como TRY CATCH. Un procedimiento almacenado puede llamar a otras Funciones definidas por el usuario o a otros Procedimientos Almacenados, y 
 generalmente permite el uso de objetos temporales como tablas temporales (por ejemplo, #temp en SQL Server) y variables de tabla.
 
-###Ventajas del Uso de Procedimientos
+### Ventajas del Uso de Procedimientos
 
 La utilización de procedimientos almacenados ofrecen los siguientes beneficios :
 
@@ -24,7 +24,7 @@ y simplificando el mantenimiento.
 
 4- Desacoplamiento de la lógica de negocios: Permiten desacoplar la lógica de negocios de la aplicación, lo que facilita la gestión de la base de datos y la aplicación de manera independiente. La aplicación puede centrarse solo en la presentación de los datos, mientras que la base de datos se encarga de la lógica.
 
-###Funciones
+### Funciones
 
 Una Función Almacenada es un objeto de base de datos diseñado principalmente para realizar cálculos y devolver un valor. Se invocan dentro de una expresión SQL 
 como si fueran parte de la sintaxis estándar del lenguaje.Estas se crean con la sentencia CREATE FUNCTION y se invocan directamente dentro de una expresión SQL, por ejemplo, dentro de una cláusula SELECT, WHERE o JOIN, actuando como un campo más de la consulta. Existen dos tipos principales: las Funciones Escalares, que retornan un único valor (como un número o una cadena), y las Funciones con Valores de Tabla (TVF), que retornan un conjunto de datos en formato de tabla.
@@ -33,7 +33,7 @@ Una diferencia crucial con los procedimientos es que las funciones siempre van y
 Por diseño, las funciones están destinadas a ser deterministicas y no se les permite modificar el estado de la base de datos, por lo tanto, solo pueden contener sentencias SELECT para recuperar o calcular datos; no pueden ejecutar INSERT, UPDATE o DELETE. Tampoco soportan transacciones ni bloques de manejo de errores como TRY CATCH. Además una función puede llamar a otras Funciones, pero no puede llamar a Procedimientos
 Almacenados.
 
-###Ventajas del Uso de Funciones
+### Ventajas del Uso de Funciones
 
 La utilización de funciones ofrecen los siguientes beneficios:
 
@@ -45,9 +45,10 @@ La utilización de funciones ofrecen los siguientes beneficios:
 
 4-Encapsulamiento de Lógica: Permiten encapsular lógica de negocio compleja (como el cálculo de la antigüedad, tarifas especiales o la validación del apto médico en tu proyecto) en un solo lugar. Esto abstrae la complejidad de la consulta principal.
 
-###Diferencias Clave: Procedimientos Almacenados vs. Funciones 
+### Diferencias Clave: Procedimientos Almacenados vs. Funciones 
 
 Para concluir, tenemos entonces las siguientes diferencias:
+
 -Modificacion de datos:
 Procedimientos Almacenados: Poseen plena autoridad para ejecutar sentencias de Lenguaje de Manipulación de Datos (DML), lo que incluye INSERT, UPDATE y DELETE. Esta capacidad es indispensable cuando la lógica de negocio requiere registrar un evento, modificar un estado o eliminar un registro, como ocurrió con la lógica de inscripción en "Vida Activa".
 Funciones: Son inherentemente limitadas a la lectura de datos. Una función solo puede ejecutar sentencias SELECT y no tiene permitido realizar ninguna operación que modifique el estado de las tablas. Esto garantiza que las funciones se comporten como componentes puramente determinísticos o de solo lectura, ideales para cálculos o formateo de datos.
@@ -71,3 +72,4 @@ Funciones: Solo admiten parámetros de Entrada (INPUT). Todo el resultado de la 
 -Jerarquía de Llamadas:
 Procedimientos Almacenados: Pueden llamar a otras Funciones y a otros Procedimientos Almacenados sin restricciones (excepto las limitaciones de anidamiento de SQL Server).
 Funciones: Solo pueden llamar a otras Funciones. Una función tiene terminantemente prohibido llamar a un Procedimiento Almacenado, reforzando la regla de que las funciones no pueden tener efectos secundarios (modificar datos).
+
