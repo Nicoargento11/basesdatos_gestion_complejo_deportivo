@@ -121,7 +121,8 @@ De esta manera, la aplicación estratégica de estos temas en SQL Server facilit
 
 
 
- 1. List item
+ 1. > Microsoft. (n.d.). *Transactional replication*. Microsoft Learn.  
+    > https://learn.microsoft.com/en-us/sql/relational-databases/replication/transactional/transactional-replication
  2. List item
  3. List item
  4. List item
