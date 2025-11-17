@@ -26,19 +26,45 @@ El complejo deportivo en estudio cuenta con múltiples áreas operativas como re
 
 A diferencia de la replicación de mezcla, que permite escritura en todos los nodos y requiere mecanismos de resolución de conflictos, la replicación transaccional es más simple de administrar, más segura y suficiente para el contexto del complejo deportivo, donde hay un único origen confiable de datos y varios lectores.
 
-## Pasos para implementar la replicación transaccional
+### Pasos para implementar la replicación transaccional 
 
-A continuación se detalla la implementación de una réplica transaccional en SQL Server Express utilizando la herramienta SQL Server Management Studio (SSMS) y servidores accesibles en red local o mediante servicios gratuitos como Microsoft Azure SQL Server (<https://azure.microsoft.com>) o Amazon RDS (<https://aws.amazon.com/rds/>):
+1. **Instalar SQL Server con el componente de replicación en ambas instancias.**  
+   Esto se hace desde el SQL Server Installation Center, modificando la instalación existente y activando 'SQL Server Replication'.
 
-1\. Instalar dos instancias de SQL Server (pueden ser locales o en la nube).  
-2\. Crear una base de datos en la instancia principal (publicador) y una vacía en el suscriptor.  
-3\. Configurar el SQL Server Agent en modo automático.  
-4\. En SSMS: ir a 'Replication' > 'Local Publications' y crear una nueva publicación.  
-5\. Elegir 'Transactional Publication'.  
-6\. Seleccionar las tablas a replicar (ej: reservas, pagos, usuarios).  
-7\. Crear un snapshot inicial.  
-8\. Luego ir a 'Subscriptions' y crear una nueva suscripción apuntando a la instancia secundaria.  
-9\. Validar la conexión y probar una modificación desde el publicador.  
-10\. Verificar que el dato haya llegado correctamente al suscriptor.
+2. **Crear dos instancias de SQL Server en la misma computadora:**  
+   Una actuará como publicador y otra como suscriptor.
 
-Durante cada paso, se deberá documentar el comportamiento, errores encontrados y forma de validación, cumpliendo con los criterios de evaluación propuestos.
+3. **Crear una carpeta en `C:\` con permisos compartidos** (ej: `C:\replicacion\`)  
+   Esta carpeta se usa para almacenar los archivos de snapshot de replicación.
+
+4. **Crear los usuarios SQL con autenticación y rol `sysadmin`,**  
+   necesarios para los agentes de replicación.
+
+5. **Conectarse a la instancia publicadora, ir a `Replication` > `Configure Distribution`**  
+   y configurar el distribuidor local usando la carpeta compartida.
+
+6. **Crear una nueva publicación en `Local Publications`.**  
+   Seleccionar la base de datos, tipo 'Transactional Publication' y las tablas a replicar.
+
+7. **Configurar el snapshot inicial y los credenciales del agente de snapshot.**
+
+8. **Nombrar y finalizar la publicación.**
+
+9. **Conectarse a la instancia suscriptora y crear una base de datos vacía**  
+   que recibirá los datos replicados.
+
+10. **Desde la instancia publicadora, ir a `Local Publications` > clic derecho > `New Subscription`.**  
+    Seleccionar la publicación creada.
+
+11. **Elegir `Push Subscription`, seleccionar la instancia del suscriptor,**  
+    base de datos de destino y usuario SQL configurado.
+
+12. **Finalizar el asistente y validar que los datos se replique automáticamente**  
+    desde el publicador al suscriptor.
+
+### Conclusión
+
+La réplica transaccional entre dos instancias en una misma PC funcionó correctamente, cumpliendo los objetivos de sincronización de datos.  
+Se han replicado los cambios en tiempo real desde el publicador al suscriptor, y se documentaron todos los pasos.  
+Este modelo permite separar cargas de lectura y escritura, mejora la disponibilidad y asegura consistencia.  
+La práctica permitió comprender cómo aplicar este enfoque a contextos reales como un complejo deportivo.
