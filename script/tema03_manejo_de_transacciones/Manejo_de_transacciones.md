@@ -124,8 +124,6 @@ En SQL Server, el manejo es controlado mediante la variable del sistema @@TRANCO
 
 ### Características en SQL Server:
 
-
-
 Cada COMMIT lo decrementa, pero solo el último COMMIT realmente confirma los cambios.
 
 Un solo ROLLBACK revierte toda la cadena de transacciones.
@@ -202,5 +200,30 @@ Las transacciones anidadas ofrecen una capa adicional de control que permite tra
 4. **El manejo de errores robusto** (TRY-CATCH) es esencial para transacciones confiables.
 
 5. **Los bloqueos y niveles de aislamiento** son cruciales para manejar la concurrencia.
+
+---
+
+## Bibliografía
+
+**Microsoft.**  *Transactions (Transact-SQL)*. Microsoft SQL Server Documentation.
+   - URL: https://learn.microsoft.com/en-us/sql/t-sql/language-elements/transactions-transact-sql
+
+**Microsoft.**  *BEGIN TRANSACTION (Transact-SQL)*. Microsoft SQL Server Documentation.
+   - URL: https://learn.microsoft.com/en-us/sql/t-sql/language-elements/begin-transaction-transact-sql
+
+**Microsoft.**  *COMMIT TRANSACTION (Transact-SQL)*. Microsoft SQL Server Documentation.
+   - URL: https://learn.microsoft.com/en-us/sql/t-sql/language-elements/commit-transaction-transact-sql
+
+**Microsoft.**  *ROLLBACK TRANSACTION (Transact-SQL)*. Microsoft SQL Server Documentation.
+   - URL: https://learn.microsoft.com/en-us/sql/t-sql/language-elements/rollback-transaction-transact-sql
+
+**Microsoft.**  *SAVE TRANSACTION (Transact-SQL)*. Microsoft SQL Server Documentation.
+   - URL: https://learn.microsoft.com/en-us/sql/t-sql/language-elements/save-transaction-transact-sql
+
+**Microsoft.**  *SET TRANSACTION ISOLATION LEVEL (Transact-SQL)*. Microsoft SQL Server Documentation.
+   - URL: https://learn.microsoft.com/en-us/sql/t-sql/statements/set-transaction-isolation-level-transact-sql
+
+**GeeksforGeeks.**  *ACID Properties in DBMS*. GeeksforGeeks.
+   - URL: https://www.geeksforgeeks.org/acid-properties-in-dbms/
 
 ---
