@@ -34,7 +34,7 @@ A diferencia de la replicación de mezcla, que permite escritura en todos los no
 2. **Crear dos instancias de SQL Server en la misma computadora:**  
    Una actuará como publicador y otra como suscriptor.
 
-3. **Crear una carpeta en `C:\` con permisos compartidos** (ej: `C:\replicacion\`)  
+3. **Crear una carpeta en `C:\` con permisos compartidos** 
    Esta carpeta se usa para almacenar los archivos de snapshot de replicación.
 
 4. **Crear los usuarios SQL con autenticación y rol `sysadmin`,**  
@@ -64,7 +64,14 @@ A diferencia de la replicación de mezcla, que permite escritura en todos los no
 
 ### Conclusión
 
-La réplica transaccional entre dos instancias en una misma PC funcionó correctamente, cumpliendo los objetivos de sincronización de datos.  
+La réplica transaccional entre dos instancias funcionó correctamente, cumpliendo los objetivos de sincronización de datos.  
 Se han replicado los cambios en tiempo real desde el publicador al suscriptor, y se documentaron todos los pasos.  
 Este modelo permite separar cargas de lectura y escritura, mejora la disponibilidad y asegura consistencia.  
 La práctica permitió comprender cómo aplicar este enfoque a contextos reales como un complejo deportivo.
+
+### Bibliografía
+**Microsoft.** *Transactional replication*. Microsoft SQL Server Documentation.  
+- URL: https://learn.microsoft.com/en-us/sql/relational-databases/replication/transactional/transactional-replication
+
+**Microsoft.** *Replication in SQL Server*. Microsoft SQL Server Documentation.  
+- URL: https://learn.microsoft.com/en-us/sql/relational-databases/replication/sql-server-replication
