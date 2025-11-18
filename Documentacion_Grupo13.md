@@ -134,6 +134,15 @@ De esta manera, la aplicación estratégica de estos temas en SQL Server facilit
 
 ## Bibliografía
 
+**Microsoft** Stored Procedures (Database Engine). Microsoft SQL Server Documentation.
+  - URL: https://learn.microsoft.com/es-es/sql/relational-databases/stored-procedures/stored-procedures-database-engine?view=sql-server-ver17
+
+**DataCamp**: Procedimientos almacenados en SQL: guía y ejemplos. DataCamp Tutorial.
+   - URL: https://www.datacamp.com/es/tutorial/sql-stored-procedure
+
+**SQLShack**: Funciones frente a procedimientos almacenados en SQL Server. SQLShack Artículo Técnico.
+  - URL: https://www.sqlshack.com/es/funciones-frente-a-los-procedimientos-almacenados-en-sql-server
+
 **Microsoft.**  *Transactions (Transact-SQL)*. Microsoft SQL Server Documentation.
    - URL: https://learn.microsoft.com/en-us/sql/t-sql/language-elements/transactions-transact-sql
 
