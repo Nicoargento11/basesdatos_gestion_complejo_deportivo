@@ -154,3 +154,9 @@ De esta manera, la aplicación estratégica de estos temas en SQL Server facilit
 
 **GeeksforGeeks.**  *ACID Properties in DBMS*. GeeksforGeeks.
    - URL: https://www.geeksforgeeks.org/acid-properties-in-dbms/
+
+**Microsoft.** *Transactional replication*. Microsoft SQL Server Documentation.  
+- URL: https://learn.microsoft.com/en-us/sql/relational-databases/replication/transactional/transactional-replication
+
+**Microsoft.** *Replication in SQL Server*. Microsoft SQL Server Documentation.  
+- URL: https://learn.microsoft.com/en-us/sql/relational-databases/replication/sql-server-replication
