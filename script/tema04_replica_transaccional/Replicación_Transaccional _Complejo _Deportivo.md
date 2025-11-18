@@ -1,6 +1,6 @@
 # Replicación Transaccional Aplicada a un Complejo Deportivo
 
-En sistemas distribuidos, la replicación de bases de datos permite copiar datos desde una instancia central a otras instancias remotas para mejorar la disponibilidad, rendimiento y seguridad. Entre los tipos de replicación más usados se encuentran la transaccional, la de mezcla y el modelo maestro-esclavo. En este documento nos enfocaremos en la replicación transaccional, que será aplicada como solución tecnológica para un complejo deportivo con necesidades operativas específicas.
+En sistemas distribuidos, la replicación de bases de datos permite copiar datos desde una instancia central a otras instancias remotas para mejorar la disponibilidad, rendimiento y seguridad. Entre los tipos de replicación más usados se encuentran la transaccional, la de mezcla y el modelo maestro-esclavo. Nos enfocaremos en la en utilizar replicación transaccional, que será aplicada como solución tecnológica para un complejo deportivo con necesidades operativas específicas.
 
 ## ¿Qué es la replicación transaccional?
 
@@ -11,8 +11,8 @@ La replicación transaccional es una técnica de sincronización de datos utiliz
 
 El complejo deportivo en estudio cuenta con múltiples áreas operativas como reservas de canchas, pagos de socios, registro de asistencia y clases programadas. Estos datos son sensibles y requieren disponibilidad constante.  
 <br/>Imaginemos que el complejo tiene:  
-\- Un servidor principal en la sede administrativa (oficina central), donde se realizan todas las operaciones de registro de datos: reservas, pagos, altas de usuarios, etc.  
-\- Un segundo servidor (o instancia SQL) ubicado en otra dependencia o red de soporte (como un centro de monitoreo o de reportes), que necesita tener acceso actualizado a esos datos para generar estadísticas o supervisar la actividad operativa.  
+\- Un servidor principal en la sede administrativa que bien podria ser una oficina central , donde se realizan todas las operaciones de registro de datos: reservas, pagos, altas de usuarios, etc.  
+\- Una segunda instancia SQL, que necesita tener acceso actualizado a esos datos para generar supervisar la actividad operativa.  
 <br/>Mediante la replicación transaccional, cada modificación que se realice en el servidor principal se replica automáticamente en la base secundaria. Por ejemplo, cuando un usuario reserva una cancha o paga su cuota, ese registro se envía al suscriptor y queda disponible allí para ser consultado por el equipo de administración o por sistemas complementarios.
 
 ## Ventajas en el escenario propuesto
