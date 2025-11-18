@@ -3,7 +3,7 @@
 -- Objetivo: Insertar 1,000,000 registros en tabla acceso
 USE Vida_Activa;
 GO
-
+   
 SET NOCOUNT ON;
 PRINT 'INICIANDO CARGA MASIVA - 1,000,000 REGISTROS';
 PRINT 'Hora inicio: ' + CONVERT(VARCHAR, GETDATE(), 120);
