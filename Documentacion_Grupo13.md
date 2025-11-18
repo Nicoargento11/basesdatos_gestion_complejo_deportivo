@@ -130,3 +130,27 @@ La Optimización de Consultas a través de Índices incrementó de manera notabl
 Por ultimo, la Réplica de Bases de Datos (Replicación Transaccional Unidireccional) se estableció como una solución estratégica para la disponibilidad y el rendimiento al designar al Suscriptor como una fuente de datos de solo lectura, se permitió descargar la carga de trabajo de consulta y generación de informes del servidor principal (Publicador), asegurando que el servidor transaccional primario pueda dedicarse exclusivamente a las operaciones de alta demanda sin comprometer su velocidad ni la integridad de los datos.
 
 De esta manera, la aplicación estratégica de estos temas en SQL Server facilitó la obtención de una solución eficaz y segura, en concordancia con los objetivos de optimización y cumplimiento de reglas de negocio. Este proyecto no solo consolidó los conocimientos teóricos, sino que también demostró la importancia crítica de una gestión meticulosa y organizada de las bases de datos en un contexto del mundo real.
+
+
+## Bibliografía
+
+**Microsoft.**  *Transactions (Transact-SQL)*. Microsoft SQL Server Documentation.
+   - URL: https://learn.microsoft.com/en-us/sql/t-sql/language-elements/transactions-transact-sql
+
+**Microsoft.**  *BEGIN TRANSACTION (Transact-SQL)*. Microsoft SQL Server Documentation.
+   - URL: https://learn.microsoft.com/en-us/sql/t-sql/language-elements/begin-transaction-transact-sql
+
+**Microsoft.**  *COMMIT TRANSACTION (Transact-SQL)*. Microsoft SQL Server Documentation.
+   - URL: https://learn.microsoft.com/en-us/sql/t-sql/language-elements/commit-transaction-transact-sql
+
+**Microsoft.**  *ROLLBACK TRANSACTION (Transact-SQL)*. Microsoft SQL Server Documentation.
+   - URL: https://learn.microsoft.com/en-us/sql/t-sql/language-elements/rollback-transaction-transact-sql
+
+**Microsoft.**  *SAVE TRANSACTION (Transact-SQL)*. Microsoft SQL Server Documentation.
+   - URL: https://learn.microsoft.com/en-us/sql/t-sql/language-elements/save-transaction-transact-sql
+
+**Microsoft.**  *SET TRANSACTION ISOLATION LEVEL (Transact-SQL)*. Microsoft SQL Server Documentation.
+   - URL: https://learn.microsoft.com/en-us/sql/t-sql/statements/set-transaction-isolation-level-transact-sql
+
+**GeeksforGeeks.**  *ACID Properties in DBMS*. GeeksforGeeks.
+   - URL: https://www.geeksforgeeks.org/acid-properties-in-dbms/
