@@ -192,3 +192,65 @@ CREATE PROCEDURE SP_EliminarClase @IdClase INT AS BEGIN
     END CATCH
 END
 GO
+
+--1) Funcion para calcular la deuda de un socio
+CREATE FUNCTION FN_CalcularDeudaTotalSocio (@DniSocio INT)
+RETURNS FLOAT
+AS
+BEGIN
+    DECLARE @DeudaTotal FLOAT;
+    SELECT @DeudaTotal = ISNULL(SUM(importe), 0.0)
+    FROM cuota
+    WHERE dni_socio = @DniSocio AND estado_cuota IN ('pendiente', 'vencida');
+    RETURN @DeudaTotal;
+END
+GO
+
+--2) Funcion para calcular los dias faltantes para el vencimiento de un apto medico
+CREATE FUNCTION FN_DiasFaltantesAptoMedico (@DniSocio INT)
+RETURNS INT
+AS
+BEGIN
+    DECLARE @FechaVencimiento DATE;
+    DECLARE @DiasRestantes INT;
+    SELECT TOP 1 @FechaVencimiento = vence_en
+    FROM apto_medico
+    WHERE dni_socio = @DniSocio
+    ORDER BY vence_en DESC;
+    IF @FechaVencimiento IS NULL
+    BEGIN
+    RETURN NULL;
+    END
+    SET @DiasRestantes = DATEDIFF(DAY, GETDATE(), @FechaVencimiento);
+    RETURN @DiasRestantes;
+END
+GO
+
+--3)Funcion para mostrar informacion de las clases que se dictaran en determinado dia
+CREATE FUNCTION FN_ClasesDisponiblesInstalacion
+(
+    @IdInstalacion INT,
+    @Fecha DATE
+)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT
+    c.id_clase,
+    c.hora_inicio,
+    c.hora_fin,
+    c.cupo_personas - ISNULL(I.Inscritos, 0) AS CuposDisponibles,
+    act.nombre_actividad
+    FROM clase c
+    INNER JOIN actividad act ON c.id_actividad = act.id_actividad
+    LEFT JOIN (
+        SELECT id_clase, COUNT(dni_socio) AS Inscritos
+        FROM inscripcion
+        GROUP BY id_clase
+    ) AS I ON c.id_clase = I.id_clase
+    WHERE c.id_instalacion = @IdInstalacion
+    AND CAST(c.hora_inicio AS DATE) = @Fecha
+    AND c.estado_clase = 'programada'
+);
+GO

@@ -3,16 +3,12 @@
 -- Objetivo: Insertar 1,000,000 registros en tabla acceso
 USE Vida_Activa;
 GO
-
+   
 SET NOCOUNT ON;
-
-PRINT '=================================================================';
 PRINT 'INICIANDO CARGA MASIVA - 1,000,000 REGISTROS';
 PRINT 'Hora inicio: ' + CONVERT(VARCHAR, GETDATE(), 120);
-PRINT '=================================================================';
 PRINT '';
 
--- ========== PASO 1: VERIFICAR Y CARGAR SOCIOS ==========
 PRINT 'PASO 1: Verificando datos de socios...';
 
 IF NOT EXISTS (SELECT 1 FROM socio)
@@ -39,8 +35,6 @@ ELSE
 BEGIN
     PRINT ' - Socios ya existen en la base de datos';
 END
-
--- Obtener rango de DNIs disponibles
 DECLARE @min_dni INT, @max_dni INT, @total_socios INT;
 SELECT 
     @min_dni = MIN(dni_socio),
@@ -52,7 +46,6 @@ PRINT ' - Socios disponibles: ' + CAST(@total_socios AS VARCHAR);
 PRINT ' - Rango DNIs: ' + CAST(@min_dni AS VARCHAR) + ' - ' + CAST(@max_dni AS VARCHAR);
 PRINT '';
 
--- ========== PASO 2: LIMPIAR TABLA ACCESO ==========
 PRINT 'PASO 2: Preparando tabla acceso...';
 
 IF EXISTS (SELECT 1 FROM acceso)
@@ -67,11 +60,11 @@ BEGIN
 END
 PRINT '';
 
--- ========== PASO 3: CONFIGURACIÓN CARGA MASIVA ==========
+
 PRINT 'PASO 3: Configurando carga masiva...';
 
-DECLARE @meta_total INT = 1000000;     -- 1 millón de registros
-DECLARE @lote_tamaño INT = 100000;     -- 100,000 por lote
+DECLARE @meta_total INT = 1000000;    
+DECLARE @lote_tamaño INT = 100000;     
 DECLARE @total_insertado INT = 0;
 DECLARE @siguiente_id INT = 1;
 DECLARE @contador_lotes INT = 0;
@@ -82,7 +75,6 @@ PRINT ' - Tamaño de lote: ' + CAST(@lote_tamaño AS VARCHAR);
 PRINT ' - Iniciando carga...';
 PRINT '';
 
--- ========== PASO 4: CARGA EN LOTES ==========
 WHILE @total_insertado < @meta_total
 BEGIN
     DECLARE @registros_a_insertar INT = 
@@ -110,8 +102,6 @@ BEGIN
         SET @contador_lotes = @contador_lotes + 1;
         SET @total_insertado = @total_insertado + @registros_a_insertar;
         SET @siguiente_id = @siguiente_id + @registros_a_insertar;
-        
-        -- Mostrar progreso
         DECLARE @progreso DECIMAL(5,2) = (@total_insertado * 100.0) / @meta_total;
         DECLARE @transcurrido INT = DATEDIFF(SECOND, @inicio_tiempo, GETDATE());
         DECLARE @velocidad DECIMAL(10,2) = @total_insertado / NULLIF(@transcurrido, 0);
@@ -119,25 +109,18 @@ BEGIN
         PRINT '   ✓ Lote completado: ' + CAST(@progreso AS VARCHAR) + '%' +
               ' | Total: ' + CAST(@total_insertado AS VARCHAR) +
               ' | Velocidad: ' + CAST(@velocidad AS VARCHAR) + ' reg/seg';
-        
-        -- Pequeña pausa cada 2 lotes
         IF @contador_lotes % 2 = 0
-            WAITFOR DELAY '00:00:01';
-            
+            WAITFOR DELAY '00:00:01'; 
     END TRY
     BEGIN CATCH
         PRINT '   ✗ Error en lote: ' + ERROR_MESSAGE();
-        PRINT '   - Reduciendo tamaño de lote...';
-        
+        PRINT '   - Reduciendo tamaño de lote...'; 
         IF @lote_tamaño > 10000
-            SET @lote_tamaño = 10000;
-            
+        SET @lote_tamaño = 10000;   
         WAITFOR DELAY '00:00:02';
         CONTINUE;
     END CATCH
 END;
-
--- ========== PASO 5: VERIFICACIÓN FINAL ==========
 PRINT '';
 PRINT 'PASO 4: Verificando carga...';
 
@@ -157,8 +140,6 @@ PRINT ' - Lotres procesados: ' + CAST(@contador_lotes AS VARCHAR);
 PRINT ' - Tiempo total: ' + CAST(@tiempo_total AS VARCHAR) + ' segundos';
 PRINT ' - Velocidad promedio: ' + CAST(@velocidad_promedio AS VARCHAR) + ' registros/segundo';
 PRINT '';
-
--- ========== PASO 6: MUESTRA DE DATOS ==========
 PRINT 'PASO 5: Muestra de datos insertados...';
 PRINT ' - Primeros 3 registros:';
 SELECT TOP 3 
@@ -167,7 +148,6 @@ SELECT TOP 3
     dni_socio
 FROM acceso 
 ORDER BY id_acceso;
-
 PRINT ' - Últimos 3 registros:';
 SELECT TOP 3 
     id_acceso,
@@ -175,12 +155,8 @@ SELECT TOP 3
     dni_socio
 FROM acceso 
 ORDER BY id_acceso DESC;
-
--- ========== INFORME FINAL ==========
 PRINT '';
-PRINT '=================================================================';
 PRINT 'CARGA MASIVA COMPLETADA';
-PRINT '=================================================================';
 PRINT 'RESUMEN:';
 PRINT ' - Inicio: ' + CONVERT(VARCHAR, @inicio_tiempo, 120);
 PRINT ' - Fin: ' + CONVERT(VARCHAR, @fin_tiempo, 120);

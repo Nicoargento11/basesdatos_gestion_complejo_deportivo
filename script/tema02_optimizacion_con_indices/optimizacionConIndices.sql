@@ -1,16 +1,14 @@
 USE Vida_Activa;
 GO
 
--- CONFIGURACI”N INICIAL Y LIMPIEZA DE CACH…
-PRINT '=== CONFIGURACI”N INICIAL ===';  
+PRINT '=== CONFIGURACI√ìN INICIAL ===';  
 DBCC DROPCLEANBUFFERS;
 DBCC FREEPROCCACHE;
-PRINT 'CachÈ limpiado para pruebas consistentes';  
+PRINT 'Cach√© limpiado para pruebas consistentes';  
 GO
 
--- 1. PRUEBA SIN ÕNDICES 
-PRINT '=== PRUEBA 1: SIN ÕNDICES ===';  
-PRINT 'Ejecutando consulta por perÌodo sin Ìndices...';
+PRINT '=== PRUEBA 1: SIN √çNDICES ===';  
+PRINT 'Ejecutando consulta por per√≠odo sin √≠ndices...';
 
 SET STATISTICS TIME ON;
 SET STATISTICS IO ON;
@@ -32,20 +30,18 @@ GO
 PRINT '=== FIN PRUEBA 1 ==='; 
 GO
 
--- CREAR ÕNDICE SIMPLE NONCLUSTERED 
-PRINT '=== CREANDO ÕNDICE SIMPLE NONCLUSTERED ===';
+PRINT '=== CREANDO √çNDICE SIMPLE NONCLUSTERED ===';
 CREATE NONCLUSTERED INDEX IX_acceso_fecha_hora 
 ON acceso(fecha_hora);  
-PRINT 'Õndice simple NONCLUSTERED IX_acceso_fecha_hora creado'; 
+PRINT '√çndice simple NONCLUSTERED IX_acceso_fecha_hora creado'; 
 GO
 
 DBCC DROPCLEANBUFFERS;
 DBCC FREEPROCCACHE;
 GO
 
--- 2. PRUEBA CON ÕNDICE SIMPLE NONCLUSTERED
-PRINT '=== PRUEBA 2: CON ÕNDICE SIMPLE NONCLUSTERED ===';  
-PRINT 'Ejecutando misma consulta con Ìndice simple nonclustered...';
+PRINT '=== PRUEBA 2: CON √çNDICE SIMPLE NONCLUSTERED ===';  
+PRINT 'Ejecutando misma consulta con √≠ndice simple nonclustered...';
 
 SET STATISTICS TIME ON;
 SET STATISTICS IO ON;
@@ -67,36 +63,32 @@ GO
 PRINT '=== FIN PRUEBA 2 ==='; 
 GO
 
--- BORRAR ÕNDICE ANTERIOR
-PRINT '=== ELIMINANDO ÕNDICE SIMPLE ===';  
+PRINT '=== ELIMINANDO √çNDICE SIMPLE ===';  
 DROP INDEX IX_acceso_fecha_hora ON acceso;
-PRINT 'Õndice simple eliminado';  
+PRINT '√çndice simple eliminado';  
 GO
 
--- VERIFICAR SI EL ÕNDICE COMPUESTO YA EXISTE Y ELIMINARLO
-PRINT '=== VERIFICANDO EXISTENCIA DEL ÕNDICE COMPUESTO ===';
+PRINT '=== VERIFICANDO EXISTENCIA DEL √çNDICE COMPUESTO ===';
 IF EXISTS (SELECT * FROM sys.indexes WHERE name = 'IX_acceso_fecha_hora_dni' AND object_id = OBJECT_ID('acceso'))
 BEGIN
-    PRINT 'El Ìndice IX_acceso_fecha_hora_dni ya existe. Elimin·ndolo...';
+    PRINT 'El √≠ndice IX_acceso_fecha_hora_dni ya existe. Elimin√°ndolo...';
     DROP INDEX IX_acceso_fecha_hora_dni ON acceso;
-    PRINT 'Õndice existente eliminado';
+    PRINT '√çndice existente eliminado';
 END
 GO
 
--- CREAR ÕNDICE COMPUESTO NONCLUSTERED
-PRINT '=== CREANDO ÕNDICE COMPUESTO NONCLUSTERED ===';
+PRINT '=== CREANDO √çNDICE COMPUESTO NONCLUSTERED ===';
 CREATE NONCLUSTERED INDEX IX_acceso_fecha_hora_dni
 ON acceso(fecha_hora, dni_socio);
-PRINT 'Õndice compuesto NONCLUSTERED creado'; 
+PRINT '√çndice compuesto NONCLUSTERED creado'; 
 GO
 
 DBCC DROPCLEANBUFFERS;
 DBCC FREEPROCCACHE;
 GO
 
--- 3. PRUEBA CON ÕNDICE COMPUESTO
-PRINT '=== PRUEBA 3: CON ÕNDICE COMPUESTO ===';  
-PRINT 'Ejecutando consulta con Ìndice compuesto...';
+PRINT '=== PRUEBA 3: CON √çNDICE COMPUESTO ===';  
+PRINT 'Ejecutando consulta con √≠ndice compuesto...';
 
 SET STATISTICS TIME ON;
 SET STATISTICS IO ON;
