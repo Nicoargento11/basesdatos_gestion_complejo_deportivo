@@ -160,3 +160,10 @@ De esta manera, la aplicación estratégica de estos temas en SQL Server facilit
 
 **Microsoft.** *Replication in SQL Server*. Microsoft SQL Server Documentation.  
 - URL: https://learn.microsoft.com/en-us/sql/relational-databases/replication/sql-server-replication
+
+**Elvis Díaz.** *Replicación SQL Server*.   
+- URL: https://www.youtube.com/watch?v=jdqze8zOsF0
+
+**Daphnne Palacios.** *Replicación de base de datos SQL Server*.   
+- URL: https://www.youtube.com/watch?v=9ZeLxqu-qSE
+
