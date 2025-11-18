@@ -45,17 +45,21 @@ Una vez creada, la informacion almacenada estara especifica diseñada para compr
 
 ## CAPITULO II: MARCO CONCEPTUAL O REFERENCIAL
 
-**TEMA 1 " Procedimientos y Funciones Almacenadas"** 
-![Acceder a la siguiente carpeta para ver el desarrollo del temal]()
+**TEMA 1 "Procedimientos y Funciones Almacenadas"**  
+[📂 Acceder a la carpeta del tema](script/tema01_Funciones_Y_Procedimientos_Almacenados/)  
+[📄 Ver documentación completa](script/tema01_Funciones_Y_Procedimientos_Almacenados/Funciones_Y_Procedimientos_Almacenados.md)
 
-**TEMA 2 " Optimización de consultas a través de índices"** 
-![Acceder a la siguiente carpeta para ver el desarrollo del temal]()
+**TEMA 2 "Optimización de consultas a través de índices"**  
+[📂 Acceder a la carpeta del tema](script/tema02_optimizacion_con_indices/)  
+[📄 Ver documentación completa](script/tema02_optimizacion_con_indices/optimizacionConIndices.md)
 
-**TEMA 3 " Manejo de transacciones y transacciones anidadas "** 
-![Acceder a la siguiente carpeta para ver el desarrollo del temal]()
+**TEMA 3 "Manejo de transacciones y transacciones anidadas"**  
+[📂 Acceder a la carpeta del tema](script/tema03_manejo_de_transacciones/)  
+[📄 Ver documentación completa](script/tema03_manejo_de_transacciones/Manejo_de_transacciones.md)
 
-**TEMA 4 " Replica de Bases de Datos "** 
-![Acceder a la siguiente carpeta para ver el desarrollo del temal]()
+**TEMA 4 "Replica de Bases de Datos"**  
+[📂 Acceder a la carpeta del tema](script/tema04_replica_transaccional/)  
+[📄 Ver documentación completa](script/tema04_replica_transaccional/Replicación_Transaccional%20_Complejo%20_Deportivo.md)
 
 
 ## CAPÍTULO III: METODOLOGÍA SEGUIDA 
@@ -89,19 +93,29 @@ Acceso al documento [PDF](doc/Diccionario_de_Datos.pdf) del diccionario de datos
 
 ### Desarrollo TEMA 1 "Procedimientos y funciones almacenadas"
 
-> Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_1](script/tema01_nombre_tema)
+> 📂 [Acceder a la carpeta del tema](script/tema01_Funciones_Y_Procedimientos_Almacenados/)  
+> 📄 [Ver documentación completa en Markdown](script/tema01_Funciones_Y_Procedimientos_Almacenados/Funciones_Y_Procedimientos_Almacenados.md)  
+> 📝 [Ver código SQL](script/tema01_Funciones_Y_Procedimientos_Almacenados/Funciones_Procedimientos.sql)
 
 ### Desarrollo TEMA 2 "Optimización de consultas a través de índices"
 
-> Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_2](script/tema02_nombre_tema)
+> 📂 [Acceder a la carpeta del tema](script/tema02_optimizacion_con_indices/)  
+> 📄 [Ver documentación completa en Markdown](script/tema02_optimizacion_con_indices/optimizacionConIndices.md)  
+> 📝 [Ver código SQL - Carga Masiva](script/tema02_optimizacion_con_indices/cargaMasiva.sql)  
+> 📝 [Ver código SQL - Optimización I](script/tema02_optimizacion_con_indices/optimizacionConIndices.sql)  
+> 📝 [Ver código SQL - Optimización II](script/tema02_optimizacion_con_indices/optimizacionConIndicesII.sql)
 
 ### Desarrollo TEMA 3 "Manejo de transacciones y transacciones anidadas"
 
-> Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_3](script/tema02_nombre_tema)
+> 📂 [Acceder a la carpeta del tema](script/tema03_manejo_de_transacciones/)  
+> 📄 [Ver documentación completa en Markdown](script/tema03_manejo_de_transacciones/Manejo_de_transacciones.md)  
+> 📝 [Ver código SQL - Casos Prácticos](script/tema03_manejo_de_transacciones/casos_practicos_transacciones.sql)  
+> 📝 [Ver código SQL - Datos de Prueba](script/tema03_manejo_de_transacciones/datos_prueba.sql)
 
 ### Desarrollo TEMA 4 "Replica Base de Datos"
 
-> Acceder a la siguiente carpeta para la descripción completa del tema [scripts-> tema_4](script/tema02_nombre_tema)
+> 📂 [Acceder a la carpeta del tema](script/tema04_replica_transaccional/)  
+> 📄 [Ver documentación completa en Markdown](script/tema04_replica_transaccional/Replicación_Transaccional%20_Complejo%20_Deportivo.md)
 
 ## CAPÍTULO V: CONCLUSIONES
 
@@ -116,15 +130,3 @@ La Optimización de Consultas a través de Índices incrementó de manera notabl
 Por ultimo, la Réplica de Bases de Datos (Replicación Transaccional Unidireccional) se estableció como una solución estratégica para la disponibilidad y el rendimiento al designar al Suscriptor como una fuente de datos de solo lectura, se permitió descargar la carga de trabajo de consulta y generación de informes del servidor principal (Publicador), asegurando que el servidor transaccional primario pueda dedicarse exclusivamente a las operaciones de alta demanda sin comprometer su velocidad ni la integridad de los datos.
 
 De esta manera, la aplicación estratégica de estos temas en SQL Server facilitó la obtención de una solución eficaz y segura, en concordancia con los objetivos de optimización y cumplimiento de reglas de negocio. Este proyecto no solo consolidó los conocimientos teóricos, sino que también demostró la importancia crítica de una gestión meticulosa y organizada de las bases de datos en un contexto del mundo real.
-
-## BIBLIOGRAFÍA DE CONSULTA
-
-
-
- 1. > Microsoft. (n.d.). *Transactional replication*. Microsoft Learn.  
-    > https://learn.microsoft.com/en-us/sql/relational-databases/replication/transactional/transactional-replication
- 2. List item
- 3. List item
- 4. List item
- 5. List item
-
